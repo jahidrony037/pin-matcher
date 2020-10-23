@@ -12,47 +12,132 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input  id="generate-value" class="form-control" type="text">
+                    <button id="generate-pin" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <p class="form-control" id="output-value" type="text"></p>
+
                     <div class="numbers">
                         <div class="calc-body">
-                            <div class="calc-button-row">
-                              <div class="button">7</div>
-                              <div class="button">8</div>
-                              <div class="button">9</div>
-                            </div>
-                            <div class="calc-button-row">
-                              <div class="button">4</div>
-                              <div class="button">5</div>
-                              <div class="button">6</div>
-                            </div>
-                            <div class="calc-button-row">
-                              <div class="button">1</div>
-                              <div class="button">2</div>
-                              <div class="button">3</div>
-                            </div>
-                            <div class="calc-button-row">
-                                <div class="button"><</div>
-                                <div class="button">0</div>
-                                <div class="button">C</div>
-                            </div>
+                           <div id="calculator-keys">
+                                    <div class="calc-button-row">
+                                        <div class="button number"  id="7">7</div>
+                                        <div class="button number" id="8">8</div>
+                                        <div class="button number"  id="9">9</div>
+                                    </div>
+                                    <div class="calc-button-row">
+                                        <div   class="button number" id="4">4</div>
+                                        <div   class="button number" id="5">5</div>
+                                        <div   class="button number"  id="6">6</div>
+                                    </div>
+                                    <div class="calc-button-row">
+                                        <div  class="button number" id="1">1</div>
+                                        <div   class="button number" id="2">2</div>
+                                        <div   class="button number" id="3">3</div>
+                                    </div>
+                                    <div class="calc-button-row">
+                                        <div class="button" id="backspace">⌫</div>
+                                        <div  class="button number" id="0">0</div>
+                                        <div class="button" id="all-clear">C</div>
+                                    </div>
+                           </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+                                <p class="action-left"> <span id="count">3</span> try left</p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p class="notify" id="failed">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="success">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+   </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("generate-pin").addEventListener("click",function(){
+
+        let generateRandomNum = Math.round(1000 + Math.random() * 9000);
+        
+        document.getElementById("generate-value").value=generateRandomNum; 
+        document.getElementById("generate-value").style.color='red';    
+        })
+
+
+       function getOutput() {
+        return document.getElementById("output-value").innerText;
+           
+             
+       }
+
+
+
+function printOutput(num){
+	
+    if(num==""){
+		document.getElementById("output-value").innerText=num;
+	}
+	else{
+		document.getElementById("output-value").innerText=num;
+	}	
+}
+       
+       var number = document.getElementsByClassName('number');
+       for (let i = 0; i < number.length; i++) {
+           number[i].addEventListener('click',function(){
+              var output = getOutput();
+              if(output !== NaN){
+                output = output + this.id;
+                console.log(output);
+                    printOutput(output);
+              }
+               
+           })
+           
+       }
+
+       document.getElementById('all-clear').addEventListener('click',function(){
+        printOutput("");
+       })
+       document.getElementById('backspace').addEventListener('click',function(){
+        var output = document.getElementById("output-value").innerText.toString();
+		output=output.substring(0,output.length-1);
+        printOutput(output);
+        
+       })
+
+       document.getElementById('submitBtn').addEventListener("click",function(){
+          var  demodigitNumber = document.getElementById('output-value').innerText;
+          var digitNumber = parseInt(demodigitNumber);
+          var demoPin = document.getElementById('generate-value').value;
+          var demoCount = document.getElementById('count').innerText;
+          var count = parseInt(demoCount);
+
+           if(digitNumber==demoPin){
+            document.getElementById('success').style.display='block';
+           }
+           else {
+            document.getElementById('failed').style.display='block';
+            var newCount = count-1;
+            document.getElementById('count').innerText=newCount;
+            if(newCount == 0){
+                alert('Reload the Site Again and Input the Pin you Generate ');
+                document.getElementById('failed').style.display='none';
+            }
+           }
+       })
+         
+        
+       
+
+
+    </script>
+
 </body>
 </html>
